@@ -1,16 +1,16 @@
 mod directory;
-use directory::DirectoryItem;
+use directory::{DirectoryItem,sort_directory};
 use ulid::Ulid;
 
 fn main() {
     let dir1 = DirectoryItem {
-        podcast_name: "My pod".to_string(),
+        podcast_name: "B My pod".to_string(),
         feed_url: "http://mypod.fm".to_string(),
         podcast_id: Ulid::new()
     };
     
     let dir2 = DirectoryItem {
-        podcast_name: "My pod 2".to_string(),
+        podcast_name: "A My pod 2".to_string(),
         feed_url: "http://mypod.fm/2".to_string(),
         podcast_id: Ulid::new()
     };
@@ -19,7 +19,7 @@ fn main() {
     pub_directory.push(dir1);
     pub_directory.push(dir2);
     
-    pub_directory.sort_by(|a, b| a.podcast_name.to_lowercase().as_str().cmp(b.podcast_name.to_lowercase().as_str()));
+    sort_directory(&mut pub_directory);
     
     println!("{:?}", pub_directory);
 }
