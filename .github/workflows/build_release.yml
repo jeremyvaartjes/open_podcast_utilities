@@ -20,18 +20,18 @@ jobs:
       run: cargo build --release --verbose
     - name: Grab release artifact
       run: cp target/release/oputil ./oputil-${{ matrix.os }}
-      if: ${{ matrix.os != windows }}
+      if: ${{ matrix.os != 'windows' }}
     - name: Grab release artifact - windows
       run: cp target/release/oputil.exe ./oputil-${{ matrix.os }}.exe
-      if: ${{ matrix.os == windows }}
+      if: ${{ matrix.os == 'windows' }}
     - uses: actions/upload-artifact@v3
-      if: ${{ matrix.os != windows }}
+      if: ${{ matrix.os != 'windows' }}
       with:
         name: oputil-${{ matrix.os }}
         path: oputil-${{ matrix.os }}
         retention-days: 1
     - uses: actions/upload-artifact@v3
-      if: ${{ matrix.os == windows }}
+      if: ${{ matrix.os == 'windows' }}
       with:
         name: oputil-${{ matrix.os }}.exe
         path: oputil-${{ matrix.os }}.exe
