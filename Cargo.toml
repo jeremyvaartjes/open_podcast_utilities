@@ -1,5 +1,5 @@
 [package]
-name = "open_podcast_utilities"
+name = "oputil"
 version = "0.1.0"
 edition = "2021"
 
