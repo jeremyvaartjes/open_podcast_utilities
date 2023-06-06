@@ -17,8 +17,8 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ncipollo/release-action@v1
       with:
-        generateReleaseNotes: true
         allowUpdates: true
+        name: oputil ${{ github.ref_name }}
   build_and_release:
     strategy:
       matrix:
