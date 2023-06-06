@@ -2,12 +2,21 @@ name: Build release
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+    - '*'
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  create_gh_release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ncipollo/release-action@v1
+      with:
+        generateReleaseNotes: true
+        allowUpdates: true
   build_and_release:
     strategy:
       matrix:
