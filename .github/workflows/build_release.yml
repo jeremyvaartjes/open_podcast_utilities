@@ -37,7 +37,7 @@ jobs:
         path: oputil-${{ matrix.os }}.exe
         retention-days: 1
   create_gh_release:
-    needs: build_and_release
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
