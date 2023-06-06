@@ -15,6 +15,8 @@ jobs:
       contents: write
     steps:
     - uses: actions/checkout@v3
+    - name: Git log
+      run: git log $(git describe --tags ${{ github.ref_name }}^)..${{ github.ref_name }} --pretty=format:"[%h] %s"
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
