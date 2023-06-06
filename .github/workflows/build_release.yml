@@ -9,11 +9,42 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows, ubuntu, macos]
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --release --verbose
+    - name: Grab release artifact
+      run: cp target/release/oputil ./oputil-${{ matrix.os }}
+      if: ${{ matrix.os != windows }}
+    - name: Grab release artifact - windows
+      run: cp target/release/oputil.exe ./oputil-${{ matrix.os }}.exe
+      if: ${{ matrix.os == windows }}
+    - uses: actions/upload-artifact@v3
+      if: ${{ matrix.os != windows }}
+      with:
+        name: oputil-${{ matrix.os }}
+        path: oputil-${{ matrix.os }}
+        retention-days: 1
+    - uses: actions/upload-artifact@v3
+      if: ${{ matrix.os == windows }}
+      with:
+        name: oputil-${{ matrix.os }}.exe
+        path: oputil-${{ matrix.os }}.exe
+        retention-days: 1
   create_gh_release:
+    needs: build_and_release
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+    - uses: actions/download-artifact@v3
+    - name: Check artifacts out
+      run: ls
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
@@ -24,14 +55,3 @@ jobs:
         allowUpdates: true
         name: oputil ${{ github.ref_name }}
         bodyFile: "changes.md"
-  build_and_release:
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --release --verbose
-    - name: Look at release folder
-      run: ls target/release
