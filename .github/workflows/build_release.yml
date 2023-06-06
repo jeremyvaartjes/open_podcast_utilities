@@ -18,11 +18,12 @@ jobs:
       with:
         fetch-depth: 0
     - name: Git log
-      run: git log $(git describe --tags --abbrev=0 ${{ github.ref_name }}^)..${{ github.ref_name }} --pretty=format:"[%h] %s"
+      run: echo "# Changes" > changes.md && git log $(git describe --tags --abbrev=0 ${{ github.ref_name }}^)..${{ github.ref_name }} --pretty=format:"[%h] %s" >> changes.md
     - uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
         name: oputil ${{ github.ref_name }}
+        bodyFile: "changes.md"
   build_and_release:
     strategy:
       matrix:
