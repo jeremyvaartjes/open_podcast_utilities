@@ -33,7 +33,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       if: ${{ matrix.os == 'windows' }}
       with:
-        name: oputil-${{ matrix.os }}.exe
+        name: ${{ matrix.os }}
         path: oputil-${{ matrix.os }}.exe
         retention-days: 1
   create_gh_release:
@@ -54,4 +54,4 @@ jobs:
       with:
         name: oputil ${{ github.ref_name }}
         bodyFile: "changes.md"
-        artifacts: "oputil-macos,oputil-ubuntu,oputil-windows.exe"
+        artifacts: "macos/oputil-macos,ubuntu/oputil-ubuntu,windows/oputil-windows.exe"
