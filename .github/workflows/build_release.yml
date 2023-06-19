@@ -48,6 +48,8 @@ jobs:
     - name: Git log
       run: echo "# Changes" > changes.md && git log $(git describe --tags --abbrev=0 ${{ github.ref_name }}^)..${{ github.ref_name }} --pretty=format:"[%h] %s" >> changes.md
     - uses: actions/download-artifact@v3
+    - name: Debug download
+      run: ls -R
     - uses: ncipollo/release-action@v1
       with:
         name: oputil ${{ github.ref_name }}
